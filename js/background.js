@@ -3,18 +3,18 @@
 
 //Grabbed from music-beta-controller source
 function FindMusicBetaTab(callback) {
-chrome.windows.getAll({populate: true}, function(windows) {
+    chrome.windows.getAll({populate: true}, function(windows) {
+    var pattern = 'https?\:\/\/music\.google\.com\/music\/listen.*';
     for (var window = 0; window < windows.length; window++) {
-      for (var i = 0; i < windows[window].tabs.length; i++) {
-        if (windows[window].tabs[i].url.
-            indexOf('http://music.google.com/music/listen') == 0) {
-          callback(windows[window].tabs[i].id)
-          return;
+        for (var i = 0; i < windows[window].tabs.length; i++) {
+            if (windows[window].tabs[i].url.match(pattern)) {
+                callback(windows[window].tabs[i].id)
+                return;
+            }
         }
-      }
     }
     callback(null);
-  });  
+    });
 }
 
 // Send the given command to a tab showing Music Beta,
@@ -33,7 +33,7 @@ function sendCommand(command) {
                 });
           }
         } else {
-          chrome.tabs.create({url: 'http://music.google.com/music/listen',
+          chrome.tabs.create({url: 'https://music.google.com/music/listen',
                               selected: true});
         }
     });
@@ -119,7 +119,7 @@ function updateInformation(){
                 });
         }else{
             console.log("else....");
-            chrome.tabs.create({url: 'http://music.google.com/music/listen',
+            chrome.tabs.create({url: 'https://music.google.com/music/listen',
                               selected: true});
         }
     });
